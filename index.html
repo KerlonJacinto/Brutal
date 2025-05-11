@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Brutal RPG</title>
+  <link rel="icon" href="IMG/logo-removebg.png" type="image/png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap">
+
+  <style>
+    :root {
+      --preto: #0a0a0a;
+      --vermelho: #c10000;
+      --roxo: #9400d3;
+      --laranja: #ff4c00;
+      --branco: #f2f2f2;
+      --amarelo: #ffff00;
+    }
+
+    body {
+      background-color: var(--preto);
+      color: var(--branco);
+      font-family: 'Bebas Neue', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      padding: 40px;
+      position: relative;
+    }
+
+     h1 {
+      font-size: 48px;
+      color: var(--laranja);
+      text-shadow: 2px 2px var(--roxo);
+      margin-bottom: 40px;
+    }
+
+    .archetypes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .archetype {
+      width: 120px;
+      height: 120px;
+      background-color: #222;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--preto);
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+    }
+
+    .archetype:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--amarelo);
+      border: 3px solid var(--amarelo);
+      z-index: 2;
+    }
+
+    .archetype img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .archetype-name {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(5px);
+      width: 100%;
+      color: var(--branco);
+      font-size: 20px;
+      padding: 2px 0;
+      z-index: 1;
+      border-top-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+
+    .skills {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+      max-width: 700px;
+    }
+
+    .skills h2 {
+      color: var(--laranja);
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    .skills-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .skill {
+      background-color: #222;
+      border: 2px solid var(--roxo);
+      color: var(--branco);
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.3s;
+      width: 18%;
+      font-size: 22px;
+    }
+
+    .skill:hover,
+    .skill.selected {
+      background-color: var(--roxo);
+    }
+
+    .skill-description {
+      margin-top: 20px;
+      color: var(--branco);
+      background-color: #111;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--roxo);
+      max-width: 600px;
+      text-align: center;
+      display: none;
+      font-size: 20px;
+    }
+
+
+    .archetype-description {
+      color: var(--branco);
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--roxo);
+      max-width: 600px;
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .play-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--roxo);
+      color: var(--branco);
+      padding: 15px 25px;
+      font-size: 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 0 10px var(--roxo);
+    }
+
+    .selected-animation {
+      animation: pulse 0.4s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      .skills-container {
+        flex-direction: column;
+      }
+
+    .skill {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    }
+
+    .heroi:hover {
+      box-shadow: 0 0 20px #dab549;
+      border-color: #dab549;
+    }
+
+    .atleta:hover {
+      box-shadow: 0 0 20px #6064d3;
+      border-color: #6064d3;
+    }
+
+    .valentao:hover {
+      box-shadow: 0 0 20px #ec405f;
+      border-color: #ec405f;
+    }
+
+    .esbelto:hover {
+      box-shadow: 0 0 20px #f358b5;
+      border-color: #f358b5;
+    }
+
+    .inocente:hover {
+      box-shadow: 0 0 20px #4abdb5;
+      border-color: #4abdb5;
+    }
+
+    .nerd:hover {
+      box-shadow: 0 0 20px #bd5bca;
+      border-color: #bd5bca;
+    }
+
+    .relaxado:hover {
+      box-shadow: 0 0 20px #4bca60;
+      border-color: #4bca60
+    }
+
+    .cetico:hover {
+      box-shadow: 0 0 20px #665f5a;
+      border-color: #665f5a;
+    }
+    
+    .skill:hover {
+      background-color: var(--roxo);
+      color: var(--preto);
+      transform: scale(1.10);
+      box-shadow: 0 0 10px var(--roxo);
+    }
+
+    #play-button:hover {
+      background-color: var(--roxo); /* ou uma variação mais clara do roxo */
+      box-shadow: 0 0 15px var(--roxo);
+      transform: scale(1.10);
+    }
+
+    #playButton {
+      background-color: var(--roxo);
+      color: var(--branco);
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+     cursor: pointer;
+      transition: 0.3s;
+    }
+ 
+  </style>
+</head>
+<body>
+  <h1>Quem é você?</h1>
+
+  <div class="archetypes">
+    <div class="archetype heroi" onclick="selectArchetype('Herói')">
+      <div class="archetype-name">Herói</div>
+      <img src="IMG/heroi.bg (1).png" alt="Herói">
+    </div>
+
+    <div class="archetype atleta" onclick="selectArchetype('Atleta')">
+      <div class="archetype-name">Atleta</div>
+      <img src="IMG/atleta.bg (1).png" alt="Atleta">
+    </div> 
+
+    <div class="archetype valentao" onclick="selectArchetype('Valentão')">
+      <div class="archetype-name">Valentão</div>
+      <img src="IMG/valentao.bg (1).png" alt="Valentão">
+    </div> 
+
+    <div class="archetype esbelto" onclick="selectArchetype('Esbelto')">
+      <div class="archetype-name">Esbelto</div>
+      <img src="IMG/esbelto.bg (1).png" alt="Esbelto">
+    </div> 
+
+    <div class="archetype inocente" onclick="selectArchetype('Inocente')">
+      <div class="archetype-name">Inocente</div>
+      <img src="IMG/inocente.bg (1).png" alt="Inocente">
+    </div> 
+
+    <div class="archetype nerd" onclick="selectArchetype('Nerd')">
+      <div class="archetype-name">Nerd</div>
+      <img src="IMG/nerd.bg (1).png" alt="Nerd">
+    </div> 
+
+    <div class="archetype relaxado" onclick="selectArchetype('Relaxado')">
+      <div class="archetype-name">Relaxado</div>
+      <img src="IMG/relaxado.bg (1).png" alt="Relaxado">
+    </div> 
+
+    <div class="archetype cetico" onclick="selectArchetype('Cético')">
+      <div class="archetype-name">Cético</div>
+      <img src="IMG/cetico.bg (1).png" alt="Cético">
+    </div>
+  </div>
+
+  <div id="archetype-description" class="archetype-description" style="display: none;"></div>
+
+  <div class="skills" id="skills-container">
+    <h2>Escolha uma habilidade:</h2>
+    <div class="skills-container" id="skills-list"></div>
+    <div id="description" class="skill-description"></div>
+  </div>
+
+  <button class="play-button" id="play-button" onclick="startGame()">Jogar</button>
+
+  <script>
+    const habilidades = {
+      'Herói': {
+        'ATÉ O FIM!': 'Ao Arriscar Tudo para si mesmo, você mantém um único dado em sua mão ao invés de sacrificar todos.',
+        'VAI NA FÉ!': 'Uma vez por sessão ao Ajudar Alguém, os dados que você doar serão automaticamente transformados em Dados de Fuga para o próximo se você quiser.',
+        'TUDO POR VOCÊ!': 'O herói pode se colocar entre um aliado e o assasino, para dividir o dano do ferir entre o alvo e ele.',
+        'SEGUE O PAI!': 'Se os Aliados de um Herói estiverem no mesmo caminho que ele em uma cena de Suspense seus riscos tem -1 de dificuldade.',
+        'EU TE PROTEJO!': 'Durante um encontro o Herói pode cancelar os efeitos de uma qualidade desfavorável de um aliado, mas enquanto faz isso seus testes são considerados complexos.',
+        descricao: 'Corajoso e conveniente, o Herói é aquele personagem que está lá para salvar a todos. Ele enfrenta o perigo sem medo, com um empurrãozinho de sorte inexplicável.'
+      },
+      'Atleta': {
+        'HOME RUN!': 'Uma vez durante um encontro, você pode comprar uma vantagem com seus pontos de Tensão.',
+        'EU AGUENTO!': 'Uma vez por encontro, o personagem pode substituir o valor de alguma de suas rolagens pelo valor do Dado Marcador.',
+        'NÃO FOI NADA!': 'Uma vez por Cena, o Atleta pode ignorar os efeitos de uma qualidade desfavorável do ambiente.',
+        'VOCÊ CONSEGUE!': 'Ao escapar de uma cena de encontro, escolha um outro sobrevivente para receber um dado de fuga automaticamente',
+        'SEMPRE ME SUPERANDO': 'Uma vez por sessão você pode se recusar a aumentar seu nível de sequela ao receber um ferimento.',
+        descricao: 'Capitão do time de futebol, ginasta competitivo, bailarino... independente do esporte que pratica, o Atleta é acostumado a explorar os limites do seu corpo, o que é muito útil para quando você está no meio de um massacre.'
+      },
+      'Valentão': {
+        'DAQUI NINGUÉM ME TIRA!': 'Uma vez por sessão, o personagem pode se recusar a sacrificar ou descartar dados em uma rolagem.',
+        'EU NÃO TENHO MEDO DE VOCÊ!': 'Uma vez por encontro, o personagem pode descartar um dado de fuga para remover um dado das mãos do assassino.',
+        'ME PASSA O QUE É SEU!': 'Uma vez por encontro, você pode usar a sua ação para roubar um dado de fuga de outro personagem.',
+        'O QUE NÃO ME MATA ME FORTALECE!': 'Ao ser afetado por um caminho armadilha, receba 2 Pontos de Tensão.',
+        'NEM FODENDO': 'Impede uma qualidade negativa de ser ativada em um cenário uma vez por sessão antes dela ter efeito pelo resto da cena.',
+        descricao: 'Ele parece um babaca, exceto quando tem um assassino à solta ofuscando sua presença. O Valentão pode não ser amigo de todos, mas você com certeza o quer do seu lado agora.'
+      },
+      'Esbelto': {
+        'NÃO PERCO A POSE!': 'Você é lindo demais para morrer. Uma vez por encontro, você pode re-rolar seus dados quando vazar dali.',
+        'EU SOU O MELHOR!': 'Ganhe 1 ponto de tensão ao obter resultados 6 nos seus dados.',
+        'TIRA ELE DE MIM!': 'Uma vez por encontro ao receber dados com a ação Ajudar Alguém você recebe um dado a mais da pilha de descarte.',
+        'OLHOS EM MIM!': 'Uma vez por sessão, a qualquer momento, você pode forçar o Assassino a focar suas ações em você em seu próximo turno, se ele usar a ação de Ferir ganhe Pontos de Tensão igual ao resultado.',
+        'NASCI VIRADA PARA A LUA!': 'Você tem um dado extra para utilizar no Rito de Iniciação, sem precisar sacrificar um seu.',
+        descricao: 'Essa pessoa é extremamente atraente aos olhos de todos, e sua beleza trouxe alguns benefícios ao navegar no mar de relações sociais. Um colírio para os olhos da audiência aterrorizada.'
+      },
+      'Inocente': {
+        'ME AJUDEM!': 'Uma vez por sessão, quando um sobrevivente usar sua ação ajudar alguém em você, essa pessoa não perde os dados que deveriam ser doados a você.',
+        'EU NÃO QUERO MORRER!': 'Durante um encontro, caso seja o último no ambiente contra o assassino, você pode arriscar tudo e manter seus dados. Caso alguém já tenha arriscado tudo antes de você, você ainda pode fazê-lo, porém perde seus dados.',
+        'NÃO MEREÇO ISSO!': 'Uma vez por sessão, pode ignorar os efeitos de alguma habilidade especial de assassino que o afete.',
+        'SE FOSSE UMA COBRA!': 'Ao seguir um caminho armadilha você é sempre o primeiro a afetar ela e sofrer as consequências, mas a primeira armadilha na cena de suspense que você ativar não tem efeito e é descartada.',
+        'FOI SORTE DE PRINCIPIANTE!': 'Por algum milagre, o inocente tem uma sorte anormal, uma vez por sessão caso o Killer descarte os dados para mata-lo, ele perde os dados e não mata o inocente.',
+        descricao: 'O Inocente não fez nada de errado. Ele é uma pessoa boa e confiável, e você não quer que ele se dê mal no meio desse caos.'
+      },
+      'Nerd': {
+        'DEIXA COMIGO!': 'Uma vez por Encontro, pode ajudar alguém do seu grupo, reduzindo em 1 o valor para a compra de alguma vantagem.',
+        'EU TENHO UMA TEORIA!': 'Uma vez por sessão antes de começar uma rodada de encontro, no começo dele ou após o turno do Assassino, você pode forçar a Diretora a anunciar a próxima ação do Assassino. Se o Assassino não consegue mais fazer essa ação ele perde o turno.',
+        'PREVEJO TRAMOIAS!': 'Uma vez por Cena de Suspense você pode questionar sobre um caminho ao usar a ação de Observar, descobrindo o resultado dele sem ativar armadilhas.',
+        'EU SEI UM ATALHO!': 'Uma vez por sessão você pode descobrir a quantidade de dados de fuga que são necessários para escapar',
+        'FUTURO BRILHANTE!': ' Após sobreviver a um encontro com o Killer, o nerd ganha vantagem no seu próximo teste de fuga e no próximo teste de susto.',
+        descricao: 'O Nerd não tem tempo para andar com a galera popular, está ocupado demais com a cabeça enfiada nos livros. Seu futuro é brilhante, mas só se ele sobreviver, né?'
+      },
+      'Relaxado': {
+        'UH? QUÊ?': 'Sua mente nem sempre está no lugar correto. Uma vez por sessão, o personagem pode ignorar um Teste de Susto.',
+        'OLÉ!': 'A malemolência de seu corpo facilita na hora de evitar algum perigo. Uma vez por encontro, quando receber um ferimento, o personagem pode solicitar que o dado marcador seja rolado novamente, mantendo o novo resultado.',
+        'POSSO ATÉ TENTAR!': 'Uma vez por encontro, o personagem pode comprar uma vantagem pertencente a uma especialidade que não possui, porém deve obter sucesso em um teste dessa especialidade. Caso não obtenha sucesso, os pontos de tensão que seriam gastos na compra ainda serão debitados.',
+        'PRESTA ATENÇÃO!': 'O relaxado ganha 3 ponto de shot quando consegue fugir de um encontro.',
+        'MINHA NOSSA!': ' Uma vez por sessão você pode forçar um teste de susto em você mesmo e ativar uma qualidade favorável no cenário.',
+        descricao: 'Uma pessoa... tranquila, assim por dizer. O Relaxado está com a cabeça em outro lugar na maior parte do dia, mas talvez seja melhor estar sóbrio na hora de enfrentar um maluco.'
+      },
+      'Cético': {
+        'IMPOSSÍVEL!': 'A sobrevivente pode re-rolar todo teste de susto uma vez.',
+        'DEVE TER UMA EXPLICAÇÃO!': 'Fora de um Encontro, o Cético pode requisitar saber a quantidade de dados do assassino. Uma vez por sessão.',
+        'TALVEZ EU ESTIVESSE ERRADO...': 'Quando tirar 6 em um teste de susto você pode no começo de um encontro transformar automaticamente um de seus dados em um dado de fuga. Essa habilidade não se acumula.',
+        'SÓ PODE SER ISSO!': 'Uma vez por encontro, após ser afetado por pelo menos um caminho armadilha em uma cena de suspense, você pode requisitar saber a quantidade de caminhos armadilhas restantes no ambiente.',
+        'NÃO É TÃO RUIM!': 'Uma vez por sessão pode escolher reduzir um dado marcador pela metade, ou ignorar um susto.',
+        descricao: 'Ele acha que está vendo filmes de terror demais. O Cético duvida do perigo até o último segundo, o que pode dificultar bastante as suas chances de sair vivo, mas com certeza facilita ver o lado mais lógico das coisas.'
+      },
+    };
+
+    let selectedArchetype = null;
+    let selectedSkill = null;
+
+    function selectArchetype(archetype) {
+      selectedArchetype = archetype;
+      selectedSkill = null;
+
+      const descriptionDiv = document.getElementById('archetype-description');
+      descriptionDiv.innerText = habilidades[archetype].descricao;
+      descriptionDiv.style.display = 'block';
+
+      const skillsContainer = document.getElementById('skills-container');
+      const skillsList = document.getElementById('skills-list');
+      const skillDescription = document.getElementById('description');
+      const playButton = document.getElementById('play-button');
+
+      skillsContainer.style.display = 'flex';
+      skillDescription.style.display = 'none';
+      playButton.style.display = 'none';
+
+      skillsList.innerHTML = '';
+
+      Object.keys(habilidades[archetype]).forEach(skill => {
+        if (skill !== 'descricao') {
+          const div = document.createElement('div');
+          div.className = 'skill';
+          div.innerText = skill;
+          div.onclick = () => selectSkill(skill, habilidades[archetype][skill], div);
+          skillsList.appendChild(div);
+        }
+      });
+    }
+
+    function selectSkill(skillName, skillText, element) {
+      selectedSkill = skillName;
+
+      document.querySelectorAll('.skill').forEach(div => div.classList.remove('selected'));
+      element.classList.add('selected');
+
+      const desc = document.getElementById('description');
+      desc.innerText = skillText;
+      desc.style.display = 'block';
+
+      document.getElementById('play-button').style.display = 'block';
+    }
+
+    
+  let selectedArchetypeElement = null;
+
+  function selectArchetype(nome) {
+    const descricaoDiv = document.getElementById("archetype-description");
+    const skillsContainer = document.getElementById("skills-container");
+    const skillsList = document.getElementById("skills-list");
+    const playButton = document.getElementById("play-button");
+
+    // Remover animação anterior
+    if (selectedArchetypeElement) {
+      selectedArchetypeElement.classList.remove("selected-animation");
+    }
+
+    // Aplicar animação ao novo arquétipo
+    const archetypes = document.querySelectorAll(".archetype");
+    archetypes.forEach(arch => {
+      if (arch.innerText.includes(nome)) {
+        arch.classList.add("selected-animation");
+        selectedArchetypeElement = arch;
+      }
+    });
+
+    // Mostrar descrição do arquétipo
+    descricaoDiv.style.display = "block";
+    descricaoDiv.textContent = habilidades[nome].descricao;
+
+    // Mostrar habilidades
+    skillsContainer.style.display = "flex";
+    skillsList.innerHTML = "";
+
+    Object.keys(habilidades[nome]).forEach(skill => {
+      if (skill !== "descricao") {
+        const skillDiv = document.createElement("div");
+        skillDiv.classList.add("skill");
+        skillDiv.textContent = skill;
+        skillDiv.onclick = () => {
+          document.querySelectorAll(".skill").forEach(s => s.classList.remove("selected"));
+          skillDiv.classList.add("selected");
+
+          const desc = document.getElementById("description");
+          desc.style.display = "block";
+          desc.textContent = habilidades[nome][skill];
+
+          playButton.style.display = "block";
+        };
+        skillsList.appendChild(skillDiv);
+      }
+    });
+  }
+
+  function startGame() {
+    alert("Jogo iniciado!"); // Você pode redirecionar para outra página aqui
+  }
+
+    function startGame() {
+    // Redireciona para brutal.html
+     window.location.href = 'brutal.html';
+    }
+
+    
+  </script>
+</body>
+</html>
